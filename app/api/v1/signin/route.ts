@@ -40,7 +40,7 @@ export async function POST(req : NextRequest){
         });
 
     }catch(err){
-        return new Response(JSON.stringify({message : "Server error"}),{
+        return new Response(JSON.stringify({message : err}),{
             status : 500,
             headers : { "Content-Type": "application/json" }
         });

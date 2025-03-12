@@ -2,6 +2,7 @@ import { NextRequest } from "next/server";
 import Content from "@/models/Content";
 import dbConnect from "@/lib/dbconnect";
 import Tag from "@/models/Tags";
+import * as jwt from "jsonwebtoken";
 
 interface ContentSchema{
     "link" : string,
@@ -46,6 +47,31 @@ export async function POST(req : NextRequest){
             headers : { "Content-Type": "application/json" }
         });
     }
-    
+}
 
+export async function GET(req : NextRequest){
+    const headers : (string | null)= req.headers.get("authorization");
+    if(headers == null){
+        return new Response(JSON.stringify({message : "Authorization header not present"}),{
+            status : 403,
+            headers : { "Content-Type": "application/json" }
+        });
+    }
+    const decoded = jwt.verify(headers, process.env.JWT_SECRET || "");
+    const userId = (decoded as {userId : string}).userId;
+    dbConnect();
+    try{
+        const content = await Content.find({
+            userId : userId
+        });
+        return new Response(JSON.stringify(content),{
+            status : 200,
+            headers : { "Content-Type": "application/json" }
+        });
+    }catch(err){
+        return new Response(JSON.stringify({message : err}),{
+            status : 500,
+            headers : { "Content-Type": "application/json" }
+        });
+    }
 }
