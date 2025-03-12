@@ -1,6 +1,7 @@
 import Users from "@/models/Users";
 import { NextRequest } from "next/server";
 import * as jwt from "jsonwebtoken";
+import dbConnect from "@/lib/dbconnect";
 
 interface userSchema{
     username : string,
@@ -13,6 +14,7 @@ export async function POST(req : NextRequest){
     // console.log(body);
     const username = body.username;
     const password = body.password;
+    dbConnect();
     try{
         const user = await Users.findOne({
             username : username,

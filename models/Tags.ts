@@ -8,4 +8,4 @@ const tagSchema = new mongoose.Schema({
     }
 });
 
-export default mongoose.models.Post || mongoose.model('Tag', tagSchema);
+export default mongoose.models.Tag || mongoose.model('Tag', tagSchema);
