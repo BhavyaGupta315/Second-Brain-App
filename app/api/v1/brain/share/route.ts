@@ -25,6 +25,15 @@ export async function POST(req : NextRequest){
                 headers : { "Content-Type": "application/json" }
             });
         }
+        const find = await Link.findOne({
+            userId : userId
+        });
+        if(find){
+            return new Response(JSON.stringify({message : "Link already shared", hash : find["hash"]}),{
+                status : 200,
+                headers : { "Content-Type": "application/json" }
+            });
+        }
         const hash = Math.random().toString(36).substring(7);
         const link = await Link.create({     
             hash : hash,
