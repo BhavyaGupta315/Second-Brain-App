@@ -1,6 +1,6 @@
 import mongoose,  {Schema, Types} from "mongoose";
 
-const contentType = ['image', 'article', 'video', 'audio'];
+const contentType = ['youtube', 'instagram', 'twitter', 'linkedin', 'link'];
 
 const ContentSchema = new Schema({
     link : {

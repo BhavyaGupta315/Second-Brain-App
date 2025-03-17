@@ -1,4 +1,4 @@
-import { Instagram, Twitter, Youtube, Link2, Hash } from "lucide-react"
+import { Instagram, Twitter, Youtube, Link2, Hash, Linkedin } from "lucide-react"
 
 import {
   Sidebar,
@@ -27,6 +27,11 @@ const items = [
     title: "Instagram",
     url: "#",
     icon: Instagram,
+  },
+  {
+    title: "Linkedin",
+    url: "#",
+    icon: Linkedin,
   },
   {
     title: "Link",
