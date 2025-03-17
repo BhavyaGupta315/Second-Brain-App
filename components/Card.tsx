@@ -1,4 +1,4 @@
-import {Instagram, Link2, Linkedin, Share, Share2, Trash2, Twitter, Youtube } from "lucide-react"
+import {Instagram, Link2, Linkedin, Share2, Trash2, Twitter, Youtube } from "lucide-react"
 
 interface CardProps{
     type : 'twitter' | 'youtube' | 'linkedin' | 'instagram' | 'link',
