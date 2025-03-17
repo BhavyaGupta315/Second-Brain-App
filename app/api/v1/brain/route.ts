@@ -1,9 +1,7 @@
 import dbConnect from "@/lib/dbconnect";
 import { NextRequest } from "next/server";
 import Link from "@/models/Link";
-import * as jwt from "jsonwebtoken";
 import Content from "@/models/Content";
-import Users from "@/models/Users";
 
 export async function GET(req : NextRequest){
     try{

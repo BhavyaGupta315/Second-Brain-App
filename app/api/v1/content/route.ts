@@ -21,7 +21,7 @@ export async function POST(req : NextRequest){
 
         for (let i = 0; i < tagsAdded.length; i++) {
             const tagName = tagsAdded[i];
-            let tag = await Tag.findOneAndUpdate(
+            const tag = await Tag.findOneAndUpdate(
                 { title: tagName },
                 { $setOnInsert: { title: tagName } },
                 { upsert: true, new: true }
