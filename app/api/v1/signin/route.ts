@@ -46,21 +46,3 @@ export async function POST(req : NextRequest){
         });
     }
 }
-
-// - Sign in    
-//     POST /api/v1/signin
-//     ```json
-//     {
-//        "username": "harkirat",
-//        "password": "123123"
-//     }
-//     ```
-//     **Returns** - 200
-//     ```json
-//     {
-//     	"token": "jwt_token"
-//     }
-//     ```
-    
-//     - 403 - Wrong email password
-//     - 500 - Internal server error

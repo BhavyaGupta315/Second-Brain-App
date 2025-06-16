@@ -6,7 +6,7 @@ import * as jwt from "jsonwebtoken";
 
 interface ContentSchema{
     "link" : string,
-    "type" : 'image'| 'article'| 'video' | 'audio',
+    "type" : 'youtube'| 'instagram'| 'twitter'| 'linkedin' | 'link',
     "title" : string,
     "tags" : string[],
 }
@@ -32,14 +32,15 @@ export async function POST(req : NextRequest){
 
         // Ensure body.tags is now an array of ObjectIds
         body.tags  = tagIds;
-        const headers : (string | null)= req.headers.get("authorization");
-        if(headers == null){
+        const headers : (string | null)= req.headers.get("Authorization");
+        if(!headers || !headers.startsWith("Bearer ")){
             return new Response(JSON.stringify({message : "Authorization header not present"}),{
                 status : 403,
                 headers : { "Content-Type": "application/json" }
             });
         }
-        const decoded = jwt.verify(headers, process.env.JWT_SECRET || "");
+        const token = headers.split(" ")[1];
+        const decoded = jwt.verify(token, process.env.JWT_SECRET || "");
         const userId = (decoded as {userId : string}).userId;
         const content = await Content.create({
             ...body,
@@ -51,6 +52,7 @@ export async function POST(req : NextRequest){
             headers: { "Content-Type": "application/json" }
         });
     }catch(err){
+        console.log(err);
         return new Response(JSON.stringify({message : err}),{
             status : 500,
             headers : { "Content-Type": "application/json" }
@@ -59,20 +61,23 @@ export async function POST(req : NextRequest){
 }
 
 export async function GET(req : NextRequest){
-    const headers : (string | null)= req.headers.get("authorization");
-    if(headers == null){
-        return new Response(JSON.stringify({message : "Authorization header not present"}),{
-            status : 403,
-            headers : { "Content-Type": "application/json" }
-        });
-    }
-    const decoded = jwt.verify(headers, process.env.JWT_SECRET || "");
+    const headers : (string | null)= req.headers.get("Authorization");
+    if(!headers || !headers.startsWith("Bearer ")){
+            return new Response(JSON.stringify({message : "Authorization header not present"}),{
+                status : 403,
+                headers : { "Content-Type": "application/json" }
+            });
+        }
+    const token = headers.split(" ")[1];
+    const decoded = jwt.verify(token, process.env.JWT_SECRET || "");
     const userId = (decoded as {userId : string}).userId;
     dbConnect();
     try{
         const content = await Content.find({
             userId : userId
-        }).populate("userId", "username");
+        }).populate("userId", "username")
+        .populate("tags", "title");
+        console.log("Content ", content );
         return new Response(JSON.stringify(content),{
             status : 200,
             headers : { "Content-Type": "application/json" }

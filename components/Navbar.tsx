@@ -1,6 +1,15 @@
 import { Plus, Share2 } from "lucide-react";
 import { Button } from "./ui/button";
 import {SidebarTrigger } from "@/components/ui/sidebar"
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog"
+import AddContent from "./AddContent";
 
 export default function Navbar() {
 
@@ -12,7 +21,21 @@ export default function Navbar() {
         </div>
         <div className="flex sm:gap-8 gap-2">
           <Button><Share2/>Share Brain</Button>
-          <Button><Plus/>Add Content</Button>
+          
+          <Dialog>
+            <DialogTrigger asChild>
+              <Button><Plus/>Add Content</Button>
+            </DialogTrigger>
+            <DialogContent>
+              <DialogHeader>
+                <DialogTitle>Add New Content</DialogTitle>
+                <DialogDescription>
+                    Fill all the fields to add new content
+                </DialogDescription>
+              </DialogHeader>
+                <AddContent/>
+            </DialogContent>
+          </Dialog>
         </div>
       </div>     
   );
