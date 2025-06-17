@@ -20,7 +20,7 @@ export default function Dashboard(){
     useEffect(() => {
     const token = localStorage.getItem('token');
 
-    (async () => {
+    const fetchData = async () => {
         const res = await fetch("/api/v1/content", {
         headers: {
             Authorization: `Bearer ${token}`,
@@ -28,17 +28,12 @@ export default function Dashboard(){
         });
 
         const data = await res.json();
-        // console.log("data is here", JSON.stringify(data, null, 2));
-
-        // console.log("data is here ", data);
+        
         setCardData([...cardData, ...data]);
-    })();
-    }, [cardData]);
+    };
+    fetchData();
+    },[]);
 
-//     console.log("Card Data:", cardData);
-//     cardData.map((card, index) => {
-//         console.log(card);
-// })
     return <div>
         <div className="grid lg:grid-cols-3 lg:gap-2 md:grid-cols-2 md:gap-1 sm:grid-cols-1">
                 <Card type="linkedin" link="Here" title="Hello"/>

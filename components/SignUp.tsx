@@ -32,10 +32,27 @@ export default function SignupForm(){
             }else{
                 console.log(response.data.message);
             }
-        }catch(err){
-            console.error("Signup Failed - ", err);
+        }catch (err) {
+        if (axios.isAxiosError(err)) {
+            
+            const errorData = err.response?.data;
+            if (errorData?.error === "zod Error") {
+                // Display Zod validation errors
+                console.error("Zod validation errors:", errorData.message);
+                alert(
+                    errorData.message
+                        .map((e: any) => `${e.path.join(".")} - ${e.message}`)
+                        .join("\n")
+                );
+            } else {
+                console.error("Signup error:", errorData?.message || err.message);
+                alert("Signup failed: " + (errorData?.message || err.message));
+            }
+        } else {
+            console.error("Unexpected error:", err);
+            alert("An unexpected error occurred.");
         }
-    }
+    }}
     return <>
         <Heading label = "Sign Up"/>
         <SubHeading label = "Enter your Information to create an account" />
