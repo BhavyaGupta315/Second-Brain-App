@@ -22,9 +22,10 @@ export default function MainPage({isShared = false, params} : {isShared? : boole
     const [cardData, setCardData] = useState<CardProps[]>([]);
     const [username, setUsername] = useState("");
     const [param, setParam] = useState("");
+    const [loading, setLoading] = useState(false);
     const fetchData = useCallback( async () => {
+        setLoading(true);
         if(isShared){
-            
             const res = await fetch(`/api/v1/brain?link=${params}`);
             if(!res.ok){
                 const errData = await res.json();
@@ -34,6 +35,7 @@ export default function MainPage({isShared = false, params} : {isShared? : boole
             const data = await res.json();
             setUsername(data.username);
             setCardData(data.content);
+            setLoading(false);
             return;
         }
         const token = localStorage.getItem('token');
@@ -44,9 +46,11 @@ export default function MainPage({isShared = false, params} : {isShared? : boole
         });
         const data = await res.json();
         setCardData(data);
+        setLoading(false);
     },[isShared, params]);
 
     useEffect(() => {
+        setLoading(true);
         fetchData();
         const updateHash = () => {
             const hash = window.location.hash.replace("#", "");
@@ -57,13 +61,14 @@ export default function MainPage({isShared = false, params} : {isShared? : boole
 
         // Initialize once on load
         updateHash();
-
+        setLoading(false);
         return () => window.removeEventListener("hashchange", updateHash);
     }, [fetchData]);
 
     return <main className="w-screen h-screen">
         <Navbar onContentAdded={fetchData} isShared={isShared}/> 
         {isShared && <div className="p-2 shadow-xs font-bold text-2xl items-center flex justify-center">{username}</div>}
+        {loading && <p>Loading.....</p>}
         <Dashboard cardData={cardData} setCardData={setCardData} param={param} isShared={isShared}/>
     </main>
 }
