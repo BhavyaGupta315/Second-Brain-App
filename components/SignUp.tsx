@@ -7,6 +7,7 @@ import { SubHeading } from "./ui/SubHeading";
 import { InputBox } from "./ui/InputBox";
 import { Button } from "./ui/button";
 import { BottomWarning } from "./ui/BottomWarning";
+import { ZodIssue } from "zod";
 
 export default function SignupForm(){
     const [formData, setFormData] = useState({
@@ -40,8 +41,8 @@ export default function SignupForm(){
                 // Display Zod validation errors
                 console.error("Zod validation errors:", errorData.message);
                 alert(
-                    errorData.message
-                        .map((e: any) => `${e.path.join(".")} - ${e.message}`)
+                    (errorData.message as ZodIssue[])
+                        .map((e) => `${e.path.join(".")} - ${e.message}`)
                         .join("\n")
                 );
             } else {

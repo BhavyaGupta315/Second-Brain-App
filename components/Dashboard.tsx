@@ -32,7 +32,7 @@ export default function Dashboard(){
         const data = await res.json();
         // console.log("data here", data);
         
-        setCardData([...cardData, ...data]);
+        setCardData(data);
     };
     fetchData();
     },[]);
