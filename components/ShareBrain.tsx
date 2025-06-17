@@ -17,7 +17,8 @@ export default function ShareBrain(){
             }
         })
         if(response.data.shared){
-            setLink(response.data.hash);
+            setLink(response.data.link);
+            setShared(true);
         }
     }
     useEffect(() => {

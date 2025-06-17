@@ -68,7 +68,7 @@ export default function MainPage({isShared = false, params} : {isShared? : boole
     return <main className="w-screen h-screen">
         <Navbar onContentAdded={fetchData} isShared={isShared}/> 
         {isShared && <div className="p-2 shadow-xs font-bold text-2xl items-center flex justify-center">{username}</div>}
-        {loading && <p>Loading.....</p>}
+        {loading && <div>Loading.....</div>}
         <Dashboard cardData={cardData} setCardData={setCardData} param={param} isShared={isShared}/>
     </main>
 }

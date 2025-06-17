@@ -3,6 +3,7 @@ import { NextRequest } from "next/server";
 import Link from "@/models/Link";
 import Content from "@/models/Content";
 import User from "@/models/Users"; 
+import Tags from "@/models/Tags";
 
 export async function GET(req : NextRequest){
     try{
@@ -21,8 +22,8 @@ export async function GET(req : NextRequest){
                 headers : { "Content-Type": "application/json" }
             });
         }
-        const temporary = await User.findOne({});
-        console.log(temporary["username"]);
+        await User.exists({});
+        await Tags.exists({});
         const linkDoc = await Link.findOne({ hash : link }).populate("userId", "username");
           if (!linkDoc || !linkDoc.userId) {
             return new Response(JSON.stringify({ message: "Link or User not found" }), {

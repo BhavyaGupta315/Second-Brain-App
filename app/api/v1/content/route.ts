@@ -3,6 +3,7 @@ import Content from "@/models/Content";
 import dbConnect from "@/lib/dbconnect";
 import Tag from "@/models/Tags";
 import * as jwt from "jsonwebtoken";
+import Tags from "@/models/Tags";
 
 interface ContentSchema{
     "link" : string,
@@ -73,6 +74,7 @@ export async function GET(req : NextRequest){
     const userId = (decoded as {userId : string}).userId;
     dbConnect();
     try{
+        await Tags.exists({});
         const content = await Content.find({
             userId : userId
         })
