@@ -10,6 +10,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog"
 import AddContent from "./AddContent";
+import ShareBrain from "./ShareBrain";
 
 export default function Navbar({onContentAdded} : {onContentAdded : () => void}) {
 
@@ -20,8 +21,23 @@ export default function Navbar({onContentAdded} : {onContentAdded : () => void})
             <div className="sm:ml-6 text-lg font-sans"> Notes </div>
         </div>
         <div className="flex sm:gap-8 gap-2">
-          <Button><Share2/>Share Brain</Button>
-          
+          <Dialog>
+            <DialogTrigger asChild>
+              <Button><Share2/>Share Brain</Button> 
+            </DialogTrigger>
+            <DialogContent>
+              <DialogHeader>
+                <DialogTitle>Share Your Brain</DialogTitle>
+                <DialogDescription>
+                    Enable this Link to share your brain
+                </DialogDescription>
+              </DialogHeader>
+                <ShareBrain/>
+            </DialogContent>
+          </Dialog>
+
+
+
           <Dialog>
             <DialogTrigger asChild>
               <Button><Plus/>Add Content</Button>

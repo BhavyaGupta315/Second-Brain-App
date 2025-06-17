@@ -28,14 +28,10 @@ const iconMap = {
   
 
 export default function Card({id, type, title, link, tags = [], userId='1', setCardData} : CardsProps){
-    // console.log(type);
-    // console.log(title);
-    // console.log(link);
-    // console.log(tags);
     const IconComponent = iconMap[type]; 
     if (!IconComponent) {
         console.error(`Unknown icon type: ${type}`);
-        return null; // or return a default icon
+        return null; 
     }
 
     const handleDelete = async () => {
@@ -62,7 +58,7 @@ export default function Card({id, type, title, link, tags = [], userId='1', setC
                     <div className="ml-2.5 text-lg font-semibold font-sans">{title}</div>
                 </div>
                 <div className="flex m-2 gap-4 mr-1">
-                    <Share2 onClick={() => alert("You cant share individual content as of this version")}/>
+                    <Share2 onClick={() => alert("You can't share individual content as of this version")}/>
                     <Trash2 onClick={handleDelete}/>
                 </div>
             </div>

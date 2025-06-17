@@ -30,7 +30,7 @@ export async function POST(req : NextRequest){
             userId : userId
         });
         if(find){
-            return new Response(JSON.stringify({message : "Link already shared", hash : find["hash"]}),{
+            return new Response(JSON.stringify({message : "Link already shared", link : find["hash"]}),{
                 status : 200,
                 headers : { "Content-Type": "application/json" }
             });
@@ -40,9 +40,9 @@ export async function POST(req : NextRequest){
             hash : hash,
             userId : userId
         });
-        console.log(link);
+        
         return new Response(JSON.stringify({message : "Link shared",
-            link
+            link : link["hash"]
         }),{
             status : 200,
             headers : { "Content-Type": "application/json" }
@@ -50,6 +50,34 @@ export async function POST(req : NextRequest){
     }catch(err){
         return new Response(JSON.stringify({message : err}),{
             status : 500,
+            headers : { "Content-Type": "application/json" }
+        });
+    }
+}
+
+export async function GET(req : NextRequest){
+    const headers = req.headers.get("Authorization");
+    if(!headers || !headers.startsWith("Bearer ")){
+        return new Response(JSON.stringify({message : "Authorization header not present"}),{
+            status : 403,
+            headers : { "Content-Type": "application/json" }
+        });
+    }
+    const token = headers.split(" ")[1];
+    const decoded = jwt.verify(token, process.env.JWT_SECRET || "");
+    const userId = (decoded as {userId : string}).userId;
+    dbConnect();
+    const find = await Link.findOne({
+        userId : userId
+    });
+    if(find){
+        return new Response(JSON.stringify({message : "Link already shared", link : find["hash"], shared : true}),{
+            status : 200,
+            headers : { "Content-Type": "application/json" }
+        });
+    }else{
+        return new Response(JSON.stringify({message : "Link is not shared", shared : true}),{
+            status : 200,
             headers : { "Content-Type": "application/json" }
         });
     }
