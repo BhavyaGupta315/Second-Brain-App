@@ -1,4 +1,4 @@
-import { Instagram, Twitter, Youtube, Link2, Hash, Linkedin } from "lucide-react"
+import { Instagram, Twitter, Youtube, Link2, Linkedin, Box } from "lucide-react"
 
 import {
   Sidebar,
@@ -14,35 +14,35 @@ import {
 // Menu items.
 const items = [
   {
-    title: "Twitter",
+    title: "All",
     url: "#",
+    icon: Box,
+  },
+  {
+    title: "Twitter",
+    url: "#twitter",
     icon: Twitter,
   },
   {
     title: "Youtube",
-    url: "#",
+    url: "#youtube",
     icon: Youtube,
   },
   {
     title: "Instagram",
-    url: "#",
+    url: "#instagram",
     icon: Instagram,
   },
   {
     title: "Linkedin",
-    url: "#",
+    url: "#linkedin",
     icon: Linkedin,
   },
   {
     title: "Link",
-    url: "#",
+    url: "#link",
     icon: Link2,
-  },
-  {
-    title: "Tags",
-    url: "#",
-    icon: Hash,
-  },
+  }
 ]
 
 export function AppSidebar() {

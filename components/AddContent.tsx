@@ -6,7 +6,7 @@ import { DialogClose } from "@/components/ui/dialog";
 
 // const API = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:3000/api/v1";
 
-export default function AddContent() {
+export default function AddContent({onContentAdded} : {onContentAdded : () => void}) {
   const [formData, setFormData] = useState({
     link: "",
     type: "youtube",
@@ -50,7 +50,7 @@ export default function AddContent() {
 
         if (success && closeRef.current) {
           closeRef.current.click(); 
-          window.location.reload();
+          onContentAdded();
         }
   }
 

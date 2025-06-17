@@ -1,50 +1,29 @@
 "use client"
 import Card from "@/components/Card";
-import { useEffect, useState } from "react";
+import { CardProps } from "./MainPage";
+import { Dispatch, SetStateAction } from "react";
 
-interface Tag {
-  _id: string;
-  title: string;
+interface DashboardProps {
+    cardData : CardProps[],
+    setCardData : Dispatch<SetStateAction<CardProps[]>>,
+    param : string
 }
 
-
-interface CardProps{
-    "_id" : string,
-    "link" : string,
-    "type" : 'youtube'| 'instagram'| 'twitter'| 'linkedin' | 'link',
-    "title" : string,
-    "tags" : Tag[],
-    "userId" : string
-}
-
-export default function Dashboard(){
-    const [cardData, setCardData] = useState<CardProps[]>([]);
-    useEffect(() => {
-    const token = localStorage.getItem('token');
-
-    const fetchData = async () => {
-        const res = await fetch("/api/v1/content", {
-        headers: {
-            Authorization: `Bearer ${token}`,
-        },
-        });
-
-        const data = await res.json();
-        // console.log("data here", data);
-        
-        setCardData(data);
-    };
-    fetchData();
-    },[]);
-
+export default function Dashboard({cardData, setCardData, param} : DashboardProps){
+    const filteredCards = param
+    ? cardData.filter((card) => card.type === param)
+    : cardData;
+    if(filteredCards.length === 0){
+        return <div className="flex justify-center items-center h-full">
+            <div className="opacity-[40%]">
+                Add Content to show here ↗
+            </div>
+        </div>
+    }
+    
     return <div>
         <div className="grid lg:grid-cols-3 lg:gap-2 md:grid-cols-2 md:gap-1 sm:grid-cols-1">
-                <Card id="1" type="linkedin" link="Here" title="Hello"/>
-                <Card id="1" type="twitter" link="Here" title="Hello"/>
-                <Card id="1" type="youtube" link="Here" title="Hello"/>
-                <Card id="1" type="instagram" link="Here" title="This is so important, come here"/> 
-                <Card id="1" type="link" link="Here" title="Come here fast"/>
-                {cardData.map((card, index) => (
+                {filteredCards.map((card, index) => (
                     <Card
                     key={index}
                     id={card._id}
@@ -53,6 +32,7 @@ export default function Dashboard(){
                     title={card.title}
                     tags={card.tags}
                     userId={card.userId}
+                    setCardData={setCardData}
                     />
                 ))}
         </div>

@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/dialog"
 import AddContent from "./AddContent";
 
-export default function Navbar() {
+export default function Navbar({onContentAdded} : {onContentAdded : () => void}) {
 
   return (
       <div className="h-16 flex items-center justify-between sm:px-8 shadow-sm">
@@ -33,7 +33,7 @@ export default function Navbar() {
                     Fill all the fields to add new content
                 </DialogDescription>
               </DialogHeader>
-                <AddContent/>
+                <AddContent onContentAdded={onContentAdded}/>
             </DialogContent>
           </Dialog>
         </div>

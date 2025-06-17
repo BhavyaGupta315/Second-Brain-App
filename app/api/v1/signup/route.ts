@@ -7,7 +7,7 @@ import jwt from "jsonwebtoken";
 const userSchema = z.object({
     username : z.string()
                 .min(3, "Username must be atleast 3 characters long")
-                .max(10, "Username must be atmost 20 characters long"),
+                .max(20, "Username must be atmost 20 characters long"),
     password : z.string()
                 .min(8, "Password must be at least 8 characters long")
                 .max(20, "Password must be at most 20 characters long")
@@ -59,6 +59,7 @@ export async function POST(req : NextRequest){
             headers : { "Content-Type": "application/json" }
         }); 
     }catch(err){
+        console.log(err);
         return new Response(JSON.stringify({message : err}),{
             status : 500,
             headers : { "Content-Type": "application/json" }

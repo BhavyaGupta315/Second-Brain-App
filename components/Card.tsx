@@ -1,5 +1,7 @@
 import axios from "axios";
 import {Instagram, Link2, Linkedin, Share2, Trash2, Twitter, Youtube } from "lucide-react"
+import { Dispatch, SetStateAction } from "react";
+import { CardProps } from "./MainPage";
 
 interface Tag {
   _id: string;
@@ -7,13 +9,14 @@ interface Tag {
 }
 
 
-interface CardProps{
+interface CardsProps{
     id : string,
     type : 'twitter' | 'youtube' | 'linkedin' | 'instagram' | 'link',
     title : string,
     link : string,
     tags?: Tag[];
-    userId? : string
+    userId? : string,
+    setCardData: Dispatch<SetStateAction<CardProps[]>>;
 }
 const iconMap = {
     twitter: Twitter,
@@ -24,7 +27,7 @@ const iconMap = {
   } as const;   
   
 
-export default function Card({id, type, title, link, tags = [], userId='1'} : CardProps){
+export default function Card({id, type, title, link, tags = [], userId='1', setCardData} : CardsProps){
     // console.log(type);
     // console.log(title);
     // console.log(link);
@@ -45,7 +48,7 @@ export default function Card({id, type, title, link, tags = [], userId='1'} : Ca
                     "userId" : userId
                 }
             })
-            window.location.reload();
+            setCardData((prev) => prev.filter((card) => card._id !== id));
         }catch(e){
             console.log(e);
         }
@@ -65,7 +68,6 @@ export default function Card({id, type, title, link, tags = [], userId='1'} : Ca
             </div>
             <div>{link}</div>
             <div>{type}</div>
-            {/* <div>{tags.join(",")}</div> */}
             <div>{tags?.map(tag => tag.title).join(", ")}</div>
         </div>
     </div>

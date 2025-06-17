@@ -10,6 +10,7 @@ import { BottomWarning } from "./ui/BottomWarning";
 import { ZodIssue } from "zod";
 
 export default function SignupForm(){
+    const [loading, setLoading] = useState(false);
     const [formData, setFormData] = useState({
         username : "",
         password : ""
@@ -26,6 +27,7 @@ export default function SignupForm(){
 
     const handleSignup = async () => {
         try {
+            setLoading(true);
             const response = await axios.post("/api/v1/signup", formData);
             if(response.status === 200){
                 localStorage.setItem("token", response.data.token);
@@ -53,7 +55,10 @@ export default function SignupForm(){
             console.error("Unexpected error:", err);
             alert("An unexpected error occurred.");
         }
-    }}
+    }finally{
+        setLoading(false);
+    }
+    }
     return <>
         <Heading label = "Sign Up"/>
         <SubHeading label = "Enter your Information to create an account" />
@@ -62,7 +67,7 @@ export default function SignupForm(){
         <InputBox label="Password" placeholder="Enter your Password" onChange={handleChange}  type="password" name="password"/>
 
         <div className="pt-4">
-            <Button onClick={handleSignup}>Sign up</Button>
+            <Button onClick={handleSignup}>{loading ? "Signing up..." : "Sign up"}</Button>
         </div>
 
         <BottomWarning label="Already have an account?" buttonText="Signin" to="/signin" />

@@ -9,6 +9,7 @@ import { Button } from "./ui/button";
 import { BottomWarning } from "./ui/BottomWarning";
 
 export default function SigninForm(){
+    const [loading, setLoading] = useState(false);
     const [formData, setFormData] = useState({
         username : "",
         password : ""
@@ -25,6 +26,7 @@ export default function SigninForm(){
 
     const handleSignin = async () => {
         try {
+            setLoading(true);
             const response = await axios.post("/api/v1/signin", formData);
             if(response.status === 200){
                 localStorage.setItem("token", response.data.token);
@@ -45,6 +47,8 @@ export default function SigninForm(){
                 console.error("Network or server error:", err.message);
                 alert("Network error. Please try again later.");
             }
+        }finally{
+            setLoading(false);
         }
     }
     return <>
@@ -55,7 +59,7 @@ export default function SigninForm(){
         <InputBox label="Password" placeholder="Enter your Password" onChange={handleChange}  type="password" name="password" />
 
         <div className="pt-4">
-            <Button onClick={handleSignin}> Sign in</Button>
+            <Button onClick={handleSignin}>{loading ? "Signing in..." : "Sign in"}</Button>
         </div>
 
         <BottomWarning label="Don't have an account?" buttonText="Signup" to="/signup" />
