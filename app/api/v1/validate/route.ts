@@ -14,7 +14,7 @@ export async function GET(req : NextRequest){
         const decoded = jwt.verify(token, JWT_SECRET) as {userId  : string};
         return NextResponse.json({ check: true, userId: decoded.userId as string });
     } catch (err) {
-        console.log("Here comes - ", err);
+        console.log(err);
         return NextResponse.json({ check: false });
     }
 }

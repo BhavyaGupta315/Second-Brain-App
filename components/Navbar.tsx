@@ -12,7 +12,7 @@ import {
 import AddContent from "./AddContent";
 import ShareBrain from "./ShareBrain";
 
-export default function Navbar({onContentAdded} : {onContentAdded : () => void}) {
+export default function Navbar({onContentAdded, isShared} : {onContentAdded : () => void, isShared : boolean}) {
 
   return (
       <div className="h-16 flex items-center justify-between sm:px-8 shadow-sm">
@@ -20,6 +20,7 @@ export default function Navbar({onContentAdded} : {onContentAdded : () => void})
             <SidebarTrigger className="sm:ml-2 cursor-pointer size-10"/>  
             <div className="sm:ml-6 text-lg font-sans"> Notes </div>
         </div>
+        {!isShared && 
         <div className="flex sm:gap-8 gap-2">
           <Dialog>
             <DialogTrigger asChild>
@@ -53,6 +54,7 @@ export default function Navbar({onContentAdded} : {onContentAdded : () => void})
             </DialogContent>
           </Dialog>
         </div>
+        }
       </div>     
   );
 }

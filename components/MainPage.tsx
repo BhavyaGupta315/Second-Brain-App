@@ -1,5 +1,5 @@
 "use client"
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import Dashboard from "./Dashboard";
 import Navbar from "./Navbar";
 
@@ -18,10 +18,24 @@ export interface CardProps{
     "userId" : string
 }
 
-export default function MainPage(){
+export default function MainPage({isShared = false, params} : {isShared? : boolean, params? : string}){
     const [cardData, setCardData] = useState<CardProps[]>([]);
+    const [username, setUsername] = useState("");
     const [param, setParam] = useState("");
-    const fetchData = async () => {
+    const fetchData = useCallback( async () => {
+        if(isShared){
+            
+            const res = await fetch(`/api/v1/brain?link=${params}`);
+            if(!res.ok){
+                const errData = await res.json();
+                console.log(errData);
+                return;
+            }
+            const data = await res.json();
+            setUsername(data.username);
+            setCardData(data.content);
+            return;
+        }
         const token = localStorage.getItem('token');
         const res = await fetch("/api/v1/content", {
         headers: {
@@ -30,7 +44,7 @@ export default function MainPage(){
         });
         const data = await res.json();
         setCardData(data);
-    };
+    },[isShared, params]);
 
     useEffect(() => {
         fetchData();
@@ -45,10 +59,11 @@ export default function MainPage(){
         updateHash();
 
         return () => window.removeEventListener("hashchange", updateHash);
-    }, []);
+    }, [fetchData]);
 
     return <main className="w-screen h-screen">
-        <Navbar onContentAdded={fetchData}/>
-        <Dashboard cardData={cardData} setCardData={setCardData} param={param}/>
+        <Navbar onContentAdded={fetchData} isShared={isShared}/> 
+        {isShared && <div className="p-2 shadow-xs font-bold text-2xl items-center flex justify-center">{username}</div>}
+        <Dashboard cardData={cardData} setCardData={setCardData} param={param} isShared={isShared}/>
     </main>
 }

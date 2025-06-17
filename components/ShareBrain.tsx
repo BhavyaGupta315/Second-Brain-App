@@ -37,7 +37,7 @@ export default function ShareBrain(){
                 "Authorization" : `Bearer ${token}`
             }
         })
-        // console.log("link ", response.data.link)
+        
         if (value) {
             setLink(response.data.link);
         } else {
@@ -72,7 +72,7 @@ export default function ShareBrain(){
                 <span className="text-gray-600 font-medium">Link: </span>
                 {link ? (
                 <a
-                    href={link}
+                    href={`/brain/${link}`}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-blue-600 underline break-words"

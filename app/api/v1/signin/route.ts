@@ -11,7 +11,7 @@ interface userSchema{
 
 export async function POST(req : NextRequest){
     const body : userSchema = await req.json();
-    // console.log(body);
+
     const username = body.username;
     const password = body.password;
     dbConnect();

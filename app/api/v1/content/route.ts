@@ -46,7 +46,7 @@ export async function POST(req : NextRequest){
             ...body,
             userId : userId
         }); 
-        console.log(content);
+
         return new Response(JSON.stringify(content), {
             status: 200,
             headers: { "Content-Type": "application/json" }
@@ -77,7 +77,7 @@ export async function GET(req : NextRequest){
             userId : userId
         })
         .populate("tags", "title");
-        // console.log("Content ", content );
+
         return new Response(JSON.stringify(content),{
             status : 200,
             headers : { "Content-Type": "application/json" }

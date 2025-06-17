@@ -17,6 +17,7 @@ interface CardsProps{
     tags?: Tag[];
     userId? : string,
     setCardData: Dispatch<SetStateAction<CardProps[]>>;
+    isShared:boolean;
 }
 const iconMap = {
     twitter: Twitter,
@@ -27,7 +28,7 @@ const iconMap = {
   } as const;   
   
 
-export default function Card({id, type, title, link, tags = [], userId='1', setCardData} : CardsProps){
+export default function Card({id, type, title, link, tags = [], userId='1', setCardData, isShared=false} : CardsProps){
     const IconComponent = iconMap[type]; 
     if (!IconComponent) {
         console.error(`Unknown icon type: ${type}`);
@@ -57,10 +58,12 @@ export default function Card({id, type, title, link, tags = [], userId='1', setC
                     <IconComponent size={32}/>
                     <div className="ml-2.5 text-lg font-semibold font-sans">{title}</div>
                 </div>
+                {!isShared && 
                 <div className="flex m-2 gap-4 mr-1">
                     <Share2 onClick={() => alert("You can't share individual content as of this version")}/>
                     <Trash2 onClick={handleDelete}/>
                 </div>
+                }
             </div>
             <div>{link}</div>
             <div>{type}</div>
