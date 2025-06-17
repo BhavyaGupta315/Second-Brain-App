@@ -75,14 +75,15 @@ export async function GET(req : NextRequest){
     try{
         const content = await Content.find({
             userId : userId
-        }).populate("userId", "username")
+        })
         .populate("tags", "title");
-        console.log("Content ", content );
+        // console.log("Content ", content );
         return new Response(JSON.stringify(content),{
             status : 200,
             headers : { "Content-Type": "application/json" }
         });
     }catch(err){
+        console.log(err);
         return new Response(JSON.stringify({message : err}),{
             status : 500,
             headers : { "Content-Type": "application/json" }

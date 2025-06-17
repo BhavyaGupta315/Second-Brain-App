@@ -5,14 +5,15 @@ import Link from "@/models/Link";
 
 export async function POST(req : NextRequest){
     try {
-        const headers : (string | null)= req.headers.get("authorization");
-        if(headers == null){
+        const headers = req.headers.get("Authorization");
+        if(!headers || !headers.startsWith("Bearer ")){
             return new Response(JSON.stringify({message : "Authorization header not present"}),{
                 status : 403,
                 headers : { "Content-Type": "application/json" }
             });
         }
-        const decoded = jwt.verify(headers, process.env.JWT_SECRET || "");
+        const token = headers.split(" ")[1];
+        const decoded = jwt.verify(token, process.env.JWT_SECRET || "");
         const userId = (decoded as {userId : string}).userId;
         dbConnect();
         const body : {share : boolean} = await req.json();

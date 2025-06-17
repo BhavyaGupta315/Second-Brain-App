@@ -2,11 +2,17 @@
 import Card from "@/components/Card";
 import { useEffect, useState } from "react";
 
+interface Tag {
+  _id: string;
+  title: string;
+}
+
+
 interface CardProps{
     "link" : string,
     "type" : 'youtube'| 'instagram'| 'twitter'| 'linkedin' | 'link',
     "title" : string,
-    "tags" : string[],
+    "tags" : Tag[],
 }
 
 export default function Dashboard(){
@@ -22,19 +28,24 @@ export default function Dashboard(){
         });
 
         const data = await res.json();
-        console.log(data);
+        // console.log("data is here", JSON.stringify(data, null, 2));
+
+        // console.log("data is here ", data);
         setCardData([...cardData, ...data]);
     })();
-    }, []);
+    }, [cardData]);
 
-    console.log("Card Data:", cardData);
+//     console.log("Card Data:", cardData);
+//     cardData.map((card, index) => {
+//         console.log(card);
+// })
     return <div>
         <div className="grid lg:grid-cols-3 lg:gap-2 md:grid-cols-2 md:gap-1 sm:grid-cols-1">
-                <Card type="linkedin" link="Here" title="Hello" tags={["Hello", "World"]}/>
-                <Card type="twitter" link="Here" title="Hello" tags={["Hello", "World"]}/>
-                <Card type="youtube" link="Here" title="Hello" tags={["Hello", "World"]}/>
-                <Card type="instagram" link="Here" title="This is so important, come here" tags={["Hello", "World"]}/> 
-                <Card type="link" link="Here" title="Come here fast" tags={["Hello", "World"]}/>
+                <Card type="linkedin" link="Here" title="Hello"/>
+                <Card type="twitter" link="Here" title="Hello"/>
+                <Card type="youtube" link="Here" title="Hello"/>
+                <Card type="instagram" link="Here" title="This is so important, come here"/> 
+                <Card type="link" link="Here" title="Come here fast"/>
                 {cardData.map((card, index) => (
                     <Card
                     key={index}

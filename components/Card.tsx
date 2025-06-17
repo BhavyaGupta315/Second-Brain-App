@@ -10,7 +10,7 @@ interface CardProps{
     type : 'twitter' | 'youtube' | 'linkedin' | 'instagram' | 'link',
     title : string,
     link : string,
-    tags: Tag[];
+    tags?: Tag[];
 }
 const iconMap = {
     twitter: Twitter,
@@ -21,7 +21,7 @@ const iconMap = {
   } as const;   
   
 
-export default function Card({type, title, link, tags} : CardProps){
+export default function Card({type, title, link, tags = []} : CardProps){
     // console.log(type);
     // console.log(title);
     // console.log(link);
@@ -46,7 +46,7 @@ export default function Card({type, title, link, tags} : CardProps){
             <div>{link}</div>
             <div>{type}</div>
             {/* <div>{tags.join(",")}</div> */}
-            <div>{tags.map(tag => tag.title).join(", ")}</div>
+            <div>{tags?.map(tag => tag.title).join(", ")}</div>
         </div>
     </div>
 }
