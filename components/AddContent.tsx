@@ -1,7 +1,8 @@
 "use client"
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { Button } from "./ui/button";
 import axios from "axios";
+import { DialogClose } from "@/components/ui/dialog";
 
 // const API = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:3000/api/v1";
 
@@ -12,6 +13,7 @@ export default function AddContent() {
     title: "",
     tags: [""],
   });
+  const closeRef = useRef<HTMLButtonElement>(null);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>, index?: number) => {
     const { name, value } = e.target;
@@ -44,6 +46,12 @@ export default function AddContent() {
             'Authorization': 'Bearer ' + token,
           }
         })
+        const success = true;
+
+        if (success && closeRef.current) {
+          closeRef.current.click(); 
+          window.location.reload();
+        }
   }
 
   return (
@@ -125,6 +133,13 @@ export default function AddContent() {
       >
         Submit
       </Button>
+      <DialogClose asChild>
+        <button
+          type="button"
+          ref={closeRef}
+          className="hidden"
+        />
+      </DialogClose>
     </>
   );
 }

@@ -93,20 +93,11 @@ export async function GET(req : NextRequest){
 
 export async function DELETE(req : NextRequest){
     try{
-        const headers : (string | null)= req.headers.get("authorization");
-        const body : {id : string} = await req.json();
-        if(headers == null){
-            return new Response(JSON.stringify({message : "Authorization header not present"}),{
-                status : 403,
-                headers : { "Content-Type": "application/json" }
-            });
-        }
-        const decoded = jwt.verify(headers, process.env.JWT_SECRET || "");
-        const userId = (decoded as {userId : string}).userId;
+        const body : {id : string, userId : string} = await req.json();
         dbConnect();
         await Content.deleteOne({
             _id : body.id,
-            userId : userId
+            userId :body.userId
         });
         return new Response(JSON.stringify({message : "Content deleted"}),{
             status : 200,

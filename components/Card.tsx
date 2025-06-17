@@ -1,3 +1,4 @@
+import axios from "axios";
 import {Instagram, Link2, Linkedin, Share2, Trash2, Twitter, Youtube } from "lucide-react"
 
 interface Tag {
@@ -7,10 +8,12 @@ interface Tag {
 
 
 interface CardProps{
+    id : string,
     type : 'twitter' | 'youtube' | 'linkedin' | 'instagram' | 'link',
     title : string,
     link : string,
     tags?: Tag[];
+    userId? : string
 }
 const iconMap = {
     twitter: Twitter,
@@ -21,7 +24,7 @@ const iconMap = {
   } as const;   
   
 
-export default function Card({type, title, link, tags = []} : CardProps){
+export default function Card({id, type, title, link, tags = [], userId='1'} : CardProps){
     // console.log(type);
     // console.log(title);
     // console.log(link);
@@ -31,6 +34,23 @@ export default function Card({type, title, link, tags = []} : CardProps){
         console.error(`Unknown icon type: ${type}`);
         return null; // or return a default icon
     }
+
+    const handleDelete = async () => {
+        const confirmDelete = window.confirm("Are you sure you want to delete this content?");
+        if (!confirmDelete) return;
+        try{
+            await axios.delete("/api/v1/content", {
+                data : {
+                    "id" : id,
+                    "userId" : userId
+                }
+            })
+            window.location.reload();
+        }catch(e){
+            console.log(e);
+        }
+    }
+
     return <div className="border rounded-md shadow-md p-4 m-4 hover:shadow-lg hover:scale-102 transition duration-300 cursor-pointer">
         <div>
             <div className="flex justify-between">
@@ -39,8 +59,8 @@ export default function Card({type, title, link, tags = []} : CardProps){
                     <div className="ml-2.5 text-lg font-semibold font-sans">{title}</div>
                 </div>
                 <div className="flex m-2 gap-4 mr-1">
-                    <Share2/>
-                    <Trash2/>
+                    <Share2 onClick={() => alert("You cant share individual content as of this version")}/>
+                    <Trash2 onClick={handleDelete}/>
                 </div>
             </div>
             <div>{link}</div>

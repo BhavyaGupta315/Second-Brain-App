@@ -9,10 +9,12 @@ interface Tag {
 
 
 interface CardProps{
+    "_id" : string,
     "link" : string,
     "type" : 'youtube'| 'instagram'| 'twitter'| 'linkedin' | 'link',
     "title" : string,
     "tags" : Tag[],
+    "userId" : string
 }
 
 export default function Dashboard(){
@@ -28,6 +30,7 @@ export default function Dashboard(){
         });
 
         const data = await res.json();
+        // console.log("data here", data);
         
         setCardData([...cardData, ...data]);
     };
@@ -36,18 +39,20 @@ export default function Dashboard(){
 
     return <div>
         <div className="grid lg:grid-cols-3 lg:gap-2 md:grid-cols-2 md:gap-1 sm:grid-cols-1">
-                <Card type="linkedin" link="Here" title="Hello"/>
-                <Card type="twitter" link="Here" title="Hello"/>
-                <Card type="youtube" link="Here" title="Hello"/>
-                <Card type="instagram" link="Here" title="This is so important, come here"/> 
-                <Card type="link" link="Here" title="Come here fast"/>
+                <Card id="1" type="linkedin" link="Here" title="Hello"/>
+                <Card id="1" type="twitter" link="Here" title="Hello"/>
+                <Card id="1" type="youtube" link="Here" title="Hello"/>
+                <Card id="1" type="instagram" link="Here" title="This is so important, come here"/> 
+                <Card id="1" type="link" link="Here" title="Come here fast"/>
                 {cardData.map((card, index) => (
                     <Card
                     key={index}
+                    id={card._id}
                     type={card.type}
                     link={card.link}
                     title={card.title}
                     tags={card.tags}
+                    userId={card.userId}
                     />
                 ))}
         </div>
