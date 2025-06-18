@@ -87,7 +87,7 @@ export default function Card({id, type, title, link, tags = [], userId='1', setC
               <EmbeddedContent type={type} link={link}/>
             </div>
             <div className="flex flex-wrap gap-2 mt-2">
-            {tags?.map(tag => (
+            {tags.length > 0 && tags?.map(tag => (
               <Tag key={tag._id}>{tag.title}</Tag>
             ))}
           </div>
