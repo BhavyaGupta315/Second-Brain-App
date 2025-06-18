@@ -12,10 +12,19 @@ interface Tag {
 
 declare global {
   interface Window {
-    twttr?: any;
-    instgrm?: any;
+    twttr?: {
+      widgets: {
+        load: (element?: HTMLElement | null) => void;
+      };
+    };
+    instgrm?: {
+      Embeds: {
+        process: () => void;
+      };
+    };
   }
 }
+
 
 
 interface CardsProps{
@@ -132,7 +141,7 @@ const EmbeddedContent = ({ link, type }: Props) => {
         }
       </div>
       <div className="flex-1">
-        <p className="text-sm text-gray-600 mb-1">Couldn't embed the content.</p>
+        <p className="text-sm text-gray-600 mb-1">Unable embed the content.</p>
         <a
           href={link}
           target="_blank"
