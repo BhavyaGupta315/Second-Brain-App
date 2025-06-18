@@ -86,7 +86,12 @@ export default function Card({id, type, title, link, tags = [], userId='1', setC
             <div>
               <EmbeddedContent type={type} link={link}/>
             </div>
-            <div>{tags?.map(tag => tag.title).join(", ")}</div>
+            <div className="flex flex-wrap gap-2 mt-2">
+            {tags?.map(tag => (
+              <Tag key={tag._id}>{tag.title}</Tag>
+            ))}
+          </div>
+
         </div>
     </div>
 }
@@ -228,4 +233,10 @@ const EmbeddedContent = ({ link, type }: Props) => {
     </div>
   );
 };
+
+const Tag = ({ children }: { children: React.ReactNode }) => (
+  <span className="px-3 py-1 rounded-full bg-black text-white text-xs font-medium">
+    {children}
+  </span>
+);
 
